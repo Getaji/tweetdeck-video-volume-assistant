@@ -1,38 +1,41 @@
-import 'emoji-log';
-import browser from 'webextension-polyfill';
+import { browser } from "webextension-polyfill-ts";
+import debounce from "debounce";
 
-import '../styles/popup.scss';
+import "../styles/popup.scss";
 
-function openWebPage(url) {
-  return browser.tabs.create({url});
+function sendMessage(message) {
+  browser.tabs
+    .query({
+      url: "https://tweetdeck.twitter.com/*",
+    })
+    .then((targetTabs) => {
+      for (let tab of targetTabs) {
+        console.log(tab);
+        try {
+          browser.tabs.sendMessage(tab.id, message);
+        } catch (e) {
+          console.error(e);
+        }
+      }
+    });
 }
 
-document.addEventListener('DOMContentLoaded', async () => {
-  const tabs = await browser.tabs.query({
-    active: true,
-    lastFocusedWindow: true,
-  });
+function onChangeVolumeInput(event) {
+  const volumeRaw = parseInt(event.target.value);
 
-  const url = tabs.length && tabs[0].url;
+  if (isNaN(volumeRaw)) return;
 
-  const response = await browser.runtime.sendMessage({
-    msg: 'hello',
-    url,
-  });
+  const volume = volumeRaw / 100;
 
-  console.emoji('🦄', response);
+  sendMessage({ type: "change-volume", value: volume });
+}
 
-  document.getElementById('github__button').addEventListener('click', () => {
-    return openWebPage(
-      'https://github.com/abhijithvijayan/web-extension-starter'
-    );
-  });
+document.addEventListener("DOMContentLoaded", () => {
+  const elInputVolume = document.getElementById("volumeRange");
 
-  document.getElementById('donate__button').addEventListener('click', () => {
-    return openWebPage('https://www.buymeacoffee.com/abhijithvijayan');
-  });
+  browser.storage.sync
+    .get("volume")
+    .then((result) => (elInputVolume.value = result.volume * 100));
 
-  document.getElementById('options__button').addEventListener('click', () => {
-    return openWebPage('options.html');
-  });
+  elInputVolume.addEventListener("change", debounce(onChangeVolumeInput, 500));
 });
