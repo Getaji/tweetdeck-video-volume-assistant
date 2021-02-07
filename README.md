@@ -22,4 +22,6 @@ npm run build:opera # for opera
 
 ## ライセンス
 
-Boilerplate from [samuelsimoes/chrome-extension-webpack-boilerplate](https://github.com/samuelsimoes/chrome-extension-webpack-boilerplate)
+MIT ライセンスで提供されています。LICENSE ファイルをご確認ください。
+
+- Use boilerplate [samuelsimoes/chrome-extension-webpack-boilerplate](https://github.com/samuelsimoes/chrome-extension-webpack-boilerplate) (MIT License)
