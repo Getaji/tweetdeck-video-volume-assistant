@@ -25,3 +25,4 @@ npm run build:opera # for opera
 MIT ライセンスで提供されています。LICENSE ファイルをご確認ください。
 
 - Use boilerplate [samuelsimoes/chrome-extension-webpack-boilerplate](https://github.com/samuelsimoes/chrome-extension-webpack-boilerplate) (MIT License)
+- Use [volume_up of Material Design Icon](https://material.io/resources/icons/) for extension icon (Apache License 2.0)
